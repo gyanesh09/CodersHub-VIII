@@ -1,0 +1,160 @@
+{% load static %}
+<html>
+<head>
+    <title>CODERS HUB</title>
+    <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+        <link rel="stylesheet" href="{% static 'assets/css/new1.css/' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/b764a53ebc.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style type="text/css">
+        body
+        {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+        .tools a
+        {
+            border: 2px solid;
+            text-decoration: none;
+            border-radius: 15px;
+            border-block-start-width: 3px;
+            border-left-width: 57px;
+            border-right-width: 57px;
+            border-top-width: 3px;
+            border-bottom-width: 3px;
+            font-size: 16px;
+        }
+        #colors_sketch
+        {
+            border: 4px solid #000;
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header" style="position:absolute">
+        <a class="logo" href="index.html">CODERS HUB</a>
+        <nav>
+            {% if user.is_authenticated %}
+            <i class="fa fa-user" style="font-size:24px;text-align:center;display:inline-block" aria-hidden="true" ></i>
+            <button style="background-color:transparent;color:#ff192a;padding-left:5px;padding:1px 0.55rem;display:inline-block" >{{user.first_name}}</button>
+            <!--<div id="hidlogout" style="background-color:transparent;color:#ff192a;padding-right:13px;display:inline-block"><a="logout" style="text-decoration:none;color:#ff1818cc">LogOut</a></div>-->
+            <button style="background-color:transparent;color:#ff192a;padding-right:11px;display:inline-block;padding: 0px 0.8rem;" onclick="location.href='logout'">LogOut</button>
+            {% else %}
+            <button style="background-color:transparent;color:#a51313;" onclick="toggle_visibility()">SignIn/Register</button>			
+            {% endif %}
+
+            <a href="#menu" style="display:inline-block">Menu</a>
+        </nav>  
+    </header>
+    <div class="form-popup" id="myForm">
+        <form action="login" class="form-container" method="POST" autocomplete="off">
+            {% csrf_token %}
+          <h1 style="color:#ffffff">Login</h1>
+      
+          <label for="email"><b style="color:white">Username</b><div id="error_msg1" style="font-size: 10px;display:none;color:red">&nbsp;&nbsp;&nbsp;&nbsp; *Enter Valid Username</div></label>
+          
+          <input type="text" id="email_login" placeholder="Enter Username" name="uname" onchange="validateLogin()" required>
+        
+          <label for="psw" ><b style="color:white">Password</b> <div id="error_msg2" style="font-size: 10px; display: none;color:red">*Password must be between 8 to 15 characters with at least one lowercase letter, one uppercase letter, one numeric digit, and one special character</div></label>
+          <input type="password" id="pwd_login" placeholder="Enter Password" name="psw" onchange="validateLogin()" required>
+         
+          <button type="submit" class="btn">Login</button>
+          
+          <button type="button"  class="btn cancel" onclick="openRegisterForm()" >New user</button>
+          <p style="text-align:center">Forgot Password?</p>
+        </form>
+      </div>
+      <div class="form-popup" id="myForm2" style="height: 707px;">
+        <form action="register" method="POST" class="form-container">
+            {% csrf_token %}
+          <h1 style="color:#ffffff">Register</h1>
+      
+          <label for="fname" ><b style="color:white">First Name</b></label>
+          <input type="text" placeholder="Enter Full Name" name="fname" required>
+          <label for="fname" ><b style="color:white">Last Name</b></label>
+          <input type="text" placeholder="Enter Full Name" name="lname" required>
+          <label for="lname" ><b style="color:white">Username</b></label>
+          <input type="text" placeholder="Enter Username" name="username" required>
+
+          <label for="email" ><b style="color:white">Email-Id</b></label>
+          <input type="text" placeholder="Enter Email" name="email" required>
+
+          <label for="psw" ><b style="color:white">New Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+          <label for="psw" ><b style="color:white">Confirm Password</b></label>
+          <input type="password" placeholder="Retype Password" name="rpsw" required>
+          <button type="submit"  class="btn cancel"  style="width:100%" onsubmit="return validateRegister()">Register Now!</button>
+        </form>
+    </div>
+    <nav id="menu">
+        <ul class="links">
+            <li><a href="home">Home</a></li>
+            <li><a href="elements.html">Elements</a></li>
+            <li><a href="about">About Us</a></li>
+        </ul> 
+    </nav>
+    <div class="row" style="display:grid;grid-template-columns:0.4fr 0.2fr 0.4fr ;grid-gap:16px;height:100%">
+        <div style="background-color: bisque;">
+<div class="tools" style="margin-left: 87px;margin-top: 66px;">
+    <a href="#colors_sketch" data-tool="marker" style="margin-right: 40px;color: #131313;text-decoration:none">Marker</a>
+     <a href="#colors_sketch" data-tool="eraser" style="color: #f00;">
+        Eraser</a>
+</div>
+<br >
+<canvas id="colors_sketch" width="150" height="150" style="margin-left: 173px;margin-top: 12px;">
+</canvas>
+<br />
+<br>
+<input type="button" id="btnSave" value="Save as Image"  style="margin-left: 172px;margin-top: 10px;" />
+<br>
+<form action="savecanvas" method="POST">
+    {% csrf_token %}
+
+<input type="text" id="inp1" name = "inp1" value="image url" style="width: 30%;margin-left: 162px;margin-top: 22px;">
+<input type="submit" id='opp' value="Predict" style="margin-left: 195px;margin-top: 26px;" > 
+</form>
+<img name ="imgCapture"  id="imgCapture" alt = "" style="display:block;border: 1px solid #000;margin-left: 164px;" >
+
+<img name ="imgReturnedLabel"  id="imgReturnedLabel" alt = "" style = "display:block;border:1px solid #ccc" >
+
+</div>
+
+<div style="background-color: cadetblue;">
+    <i class="fas fa-arrow-circle-right fa-5x"style="margin-top: 128%;margin-left: 27%;" ></i>
+</div>
+
+<div style="background-color: brown;">
+            <p style="font-size:250px;margin-left: 25%;margin-top: 30%;">{{ans}}</p>
+</div>
+
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/mobomo/sketch.js/master/lib/sketch.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#colors_sketch').sketch();
+        $(".tools a").eq(0).attr("style", "color:#000");
+        $(".tools a").click(function () {
+            $(".tools a").removeAttr("style");
+            $(this).attr("style", "color:#000");
+        });
+        $("#btnSave").bind("click", function () {
+            var base64 = $('#colors_sketch')[0].toDataURL();
+            console.log(' '+base64);
+            $("#imgCapture").attr("src", base64);
+            var tempbase64 = $('#imgCapture').attr('src');
+            console.log(' '+tempbase64);
+            $("#inp1").attr("value", tempbase64);
+            $("#imgCapture").show();
+        });
+    });
+</script>
+
+
+</body>
+</html>

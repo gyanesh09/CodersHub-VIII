@@ -1,0 +1,441 @@
+{% load static %}
+
+<html>
+	<head>
+		<title>CODERS HUB</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/new1.css/' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+			html{
+				scroll-behavior: smooth;
+			}
+            .regnavbar{
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+                position: -webkit-sticky; /* Safari */
+                position: sticky;
+                top: 0;		
+            }
+
+            .regnavbar li{
+                float: left;
+            }
+            .regnavbar li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+              }
+              
+             .regnavbar li a:hover {
+                background-color: #111;
+              }
+              .active {
+                background-color: #026980;
+			  }
+			  .navtpc{
+				  background-color: #333;
+			  }
+			  .column{
+				float:left;
+				padding: 10px;
+			  }
+			  .left{
+				  width: 52%;
+			  }
+			  .right{
+				  width:40%;
+			  }
+        </style>    
+	</head>
+
+	<body class="is-preload" >
+
+		<!-- Header -->
+			<header id="header" style="position:absolute">
+				<a class="logo" href="index.html">CODERS HUB</a>
+				<nav>
+                    {% if user.is_authenticated %}
+					<i class="fa fa-user" style="font-size:24px;text-align:center;display:inline-block" aria-hidden="true" ></i>
+					<button style="background-color:transparent;color:#ff192a;padding-left:5px;padding:1px 0.55rem;display:inline-block" >{{user.first_name}}</button>
+					<!--<div id="hidlogout" style="background-color:transparent;color:#ff192a;padding-right:13px;display:inline-block"><a="logout" style="text-decoration:none;color:#ff1818cc">LogOut</a></div>-->
+					<button style="background-color:transparent;color:#ff192a;padding-right:11px;display:inline-block;padding: 0px 0.8rem;" onclick="location.href='logout'">LogOut</button>
+					{% else %}
+					<button style="background-color:transparent;color:#a51313;" onclick="toggle_visibility()">SignIn/Register</button>			
+					{% endif %}
+
+                    <a href="#menu" style="display:inline-block">Menu</a>
+                </nav>  
+            </header>
+            <div class="form-popup" id="myForm">
+				<form action="login" class="form-container" method="POST">
+					{% csrf_token %}
+				  <h1 style="color:#ffffff">Login</h1>
+			  
+				  <label for="email"><b style="color:white">Username</b><div id="error_msg1" style="font-size: 10px;display:none;color:red">&nbsp;&nbsp;&nbsp;&nbsp; *Enter Valid Username</div></label>
+				  
+				  <input type="text" id="email_login" placeholder="Enter Username" name="uname" onchange="validateLogin()" required>
+				
+				  <label for="psw" ><b style="color:white">Password</b> <div id="error_msg2" style="font-size: 10px; display: none;color:red">*Password must be between 8 to 15 characters with at least one lowercase letter, one uppercase letter, one numeric digit, and one special character</div></label>
+				  <input type="password" id="pwd_login" placeholder="Enter Password" name="psw" onchange="validateLogin()" required>
+				 
+				  <button type="submit" class="btn">Login</button>
+				  <button type="button"  class="btn cancel" onclick="openRegisterForm()" >New user</button>
+				  <p style="text-align:center">Forgot Password?</p>
+				</form>
+			  </div>
+			  <div class="form-popup" id="myForm2" style="height: 707px;">
+                <form action="register" method="POST" class="form-container">
+					{% csrf_token %}
+				  <h1 style="color:#ffffff">Register</h1>
+			  
+				  <label for="fname" ><b style="color:white">First Name</b></label>
+				  <input type="text" placeholder="Enter Full Name" name="fname" required>
+				  <label for="fname" ><b style="color:white">Last Name</b></label>
+				  <input type="text" placeholder="Enter Full Name" name="lname" required>
+				  <label for="lname" ><b style="color:white">Username</b></label>
+				  <input type="text" placeholder="Enter Username" name="username" required>
+
+				  <label for="email" ><b style="color:white">Email-Id</b></label>
+				  <input type="text" placeholder="Enter Email" name="email" required>
+		
+				  <label for="psw" ><b style="color:white">New Password</b></label>
+				  <input type="password" placeholder="Enter Password" name="psw" required>
+				  <label for="psw" ><b style="color:white">Confirm Password</b></label>
+				  <input type="password" placeholder="Retype Password" name="rpsw" required>
+				  <button type="submit"  class="btn cancel"  style="width:100%" onsubmit="return validateRegister()">Register Now!</button>
+				</form>
+            </div>
+            <nav id="menu">
+				<ul class="links">
+					<li><a href="home">Home</a></li>
+					<li><a href="elements.html">Elements</a></li>
+					<li><a href="about">About Us</a></li>
+				</ul>
+            </nav>
+
+            <ul class="regnavbar">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="#linear">Linear Regression</a></li>
+                <li><a href="#multiple" >Multiple Regression</a></li>
+                <li><a href="#poly" >Polynomial Regression</a></li>
+                <li><a href="#decision" >DecisionTree Regression</a></li>
+                <li><a href="#random" >Random Forest Regression</a></li>
+                <li><a href="#contact">Support Vector Regression</a></li>
+
+            </ul>
+			<br>
+		<div class="wrappper" style="scroll-behavior: smooth; overflow-y:scroll">
+            <header style="text-align: center;font-weight:bold;font-size:30px;color:black">Machine Learning Part1- Regression</header>
+      
+		<a name="linear" style="text-decoration: none;"><div class=row1 style="width:100%;height: 623px;margin-top: 4%;"></a>
+			<div class="column left">
+			<h3 style="color:black;font-weight:bold;font-size:25px">Simple Linear Regression</h3><br>
+			<p style="text-align: justify;font-weight:bold;color:#444444">
+			Linear regression models provide a simple approach twards supervised learning. They are simple yet effective.<br><br>
+			Wait, what do we mean by linear?<br><br>
+			Linear implies the following: arranged in or extending along a straight or nearly straight line. Linear suggests that the relationship between dependent and independent variable can be expressed in a straight line.
+			Recall the geometry lesson from high school. What is the equation of a line?
+			<br>
+			<br>
+			<span style="color:black;font-weight:bolder;font-size:20px;margin-left:6%">y=mx+c</span>
+			<br>
+			<br>
+			Linear regression is nothing but a manifestation of this simple equation.<br><br>
+			<ul style="text-align: justify;font-weight:bold">
+				<li>y is the dependent variable i.e. the variable that needs to be estimated and predicted.</li>
+				<li>x is the independent variable i.e. the variable that is controllable. It is the input.</li>
+				<li>m is the slope. It determines what will be the angle of the line. It is the parameter denoted as β.</li>
+				<li>c is the intercept. A constant that determines the value of y when x is 0.</li>        
+			</ul>
+
+			<p style="text-align: justify;font-weight:bold;color:#444444">Linear regression models are not perfect. It tries to approximate the relationship between dependent and independent variables in a straight line. Approximation leads to errors. Some errors can be reduced. Some errors are inherent in the nature of the problem. These errors cannot be eliminated. They are called as an irreducible error, the noise term in the true relationship that cannot fundamentally be reduced by any model.<br>
+				The same equation of a line can be re-written as:        
+			</p>
+			
+			</p></div>    
+			<div class="column right">
+				<img src="{% static 'assets/images/lnrreg.png' %}" alt="" style= "width:80%;height:50%; margin-top: 33%;margin-left: 23%;" />
+			</div>
+		</div>
+		<br><br>
+		<a name="multiple" style="text-decoration: none;"><div class=row2 style="width:100%;height: 1110px;margin-top: 5%;"></a>
+			<div class= "column left">
+				<h3 style="color:black;font-weight:bold;font-size:25px">Multiple Regression</h3><br></a>
+				<p style="text-align: justify;font-weight:bold;color:#444444">
+					 Multiple regression is an extension of simple linear regression. It is used when we want to predict the value of a variable based on the value of two or more other variables. The variable we want to predict is called the dependent variable (or sometimes, the outcome, target or criterion variable).
+					 The variables we are using to predict the value of the dependent variable are called the independent variables (or sometimes, the predictor, explanatory or regressor variables).
+					<br><br>For example, you could use multiple regression to understand whether exam performance can be predicted based on revision time, test anxiety, lecture attendance and gender. Alternately, you could use multiple regression to understand whether daily cigarette consumption can be predicted based on smoking duration, age when started smoking, smoker type, income and gender.
+
+					<br><br>Multiple regression also allows you to determine the overall fit (variance explained) of the model and the relative contribution of each of the predictors to the total variance explained. For example, you might want to know how much of the variation in exam performance can be explained by revision time, test anxiety, lecture attendance and gender "as a whole", but also the "relative contribution" of each independent variable in explaining the variance.	
+					
+					<br><br>The multiple regression equation explained above takes the following form:
+					<br><br><span style="color:black;font-weight:bolder;font-size:20px;margin-left:6%">y = b1x1 + b2x2 + … + bnxn + c.</span>
+				    <br><br>Here, bi’s (i=1,2…n) are the regression coefficients, which represent the value at which the criterion variable changes when the predictor variable changes.
+					<br><br>
+					<span style="color:black;font-weight:bolder;font-size:18px;margin-left:1%">Assumptions</span><br><br>
+				    There should be proper specification of the model in multiple regression. This means that only relevant variables must be included in the  model and the model should be reliable.
+					Linearity must be assumed; the model should be linear in nature.
+					Normality must be assumed in multiple regression. <br><br>  This means that in multiple regression, variables must have normal distribution.
+					Homoscedasticity must be assumed; the variance is constant across all levels of the predicted variable.
+					There are certain terminologies that help in understanding multiple regression.  These terminologies are as follows:
+					<br><br>
+					<strong>The beta</strong> value is used in measuring how effectively the predictor variable influences the criterion variable, it is measured in terms of standard deviation.
+					<br><br>R, is the measure of association between the observed value and the predicted value of the criterion variable.  R Square, or R2, is the square of the measure of association which indicates the percent of overlap between the predictor variables and the criterion variable.  Adjusted R2 is an estimate of the R2 if you used this model with a new data set.
+				</p>	
+			</div>	
+		
+			<div class="column right">
+
+				<img src="{% static 'assets/images/multireg2.png' %}" alt="" style= "width:82%;height:34%; margin-top: 33%;margin-left: 23%" />
+
+			</div>	
+		</div>	
+			<br><br>
+			<a name="poly" style="text-decoration: none;"><div class=row3 style="width:100%;height: 873px;margin-top: 5%;">
+				<div class= "column left">
+					<h3 style="color:black;font-weight:bold;font-size:25px">Polynomial Regression</h3><br></a>
+					<p style="text-align: justify;font-weight:bold;color:#444444">
+						In the last section, we saw two variables in your data set were correlated but what happens if we know that our data is correlated, but the relationship doesn’t look linear? So hence depending on what the data looks like, we can do a polynomial regression on the data to fit a polynomial equation to it.
+						<br><br>Hence If we try to use a simple linear regression in the above graph then the linear regression line won’t fit very well. It is very difficult to fit a linear regression line in the above graph with a low value of error. Hence we can try to use the polynomial regression to fit a polynomial line so that we can achieve a minimum error or minimum cost function. The equation of the polynomial regression for the above graph data would be:
+	
+						<br><br><span style="color:black;font-weight:bolder;font-size:18px;margin-left:6%">y = θo + θ₁x₁ + θ₂ x₁²</span><br>	
+						
+						<br><br>This is the general equation of a polynomial regression is:
+						<br><br><span style="color:black;font-weight:bolder;font-size:20px;margin-left:6%">Y=θo + θ₁X + θ₂X² + … + θₘXᵐ + residual error</span>
+						<br><br>	
+						<span style="color:black;font-weight:bolder;font-size:18px;margin-left:1%">Advantages of using Polynomial Regression:</span><br><br>
+						<ul style="text-align: justify;font-weight:bold">
+							<li>Polynomial provides the best approximation of the relationship between the dependent and independent variable.</li>
+							<li>A Broad range of function can be fit under it.</li>
+							<li>Polynomial basically fits a wide range of curvature.</li>
+
+						</ul>
+
+						<ul style="text-align: justify;font-weight:bold">Disadvantages of using Polynomial Regression
+						<li>The presence of one or two outliers in the data can seriously affect the results of the nonlinear analysis.</li>
+						<li>These are too sensitive to the outliers.</li>
+						<li>In addition, there are unfortunately fewer model validation tools for the detection of outliers in nonlinear regression than there are for linear regression.</li>
+						</ul><q></q>
+					</p>	
+
+				</div>	
+	
+				<div class="column right">
+	
+					<img src="{% static 'assets/images/polyreg1.png' %}" alt="" style= "width:111%;height:40%; margin-top: 15%;margin-left: 4%;" />
+					<br><br>
+					<img src="{% static 'assets/images/polyreg2.png' %}" style= "width:80%;height:36%; margin-top: 5%;margin-left: 18%;">
+				</div>	
+			</div>
+			
+			<a name="decision" style="text-decoration: none;"><div class=row4 style="width:100%;height: 910px;margin-top: 5%;">
+				<div class= "column left">
+					<h3 style="color:black;font-weight:bold;font-size:25px">DecisionTree Regression</h3><br></a>
+					<p style="text-align: justify;font-weight:bold;color:#444444">
+						Decision Tree is a decision-making tool that uses a flowchart-like tree structure or is a model of decisions and all of their possible results, including outcomes, input costs and utility.						<br><br>For example, you could use multiple regression to understand whether exam performance can be predicted based on revision time, test anxiety, lecture attendance and gender. Alternately, you could use multiple regression to understand whether daily cigarette consumption can be predicted based on smoking duration, age when started smoking, smoker type, income and gender.
+	
+						<br><br>Decision-tree algorithm falls under the category of supervised learning algorithms. It works for both continuous as well as categorical output variables.						
+						<br><br>The multiple regression equation explained above takes the following form:
+						
+						<!-- <br><br><span style="color:black;font-weight:bolder;font-size:20px;margin-left:6%">y = b1x1 + b2x2 + … + bnxn + c.</span> -->
+		
+						<br><br>
+						<span style="color:black;font-weight:bolder;font-size:18px;margin-left:1%">The branches/edges represent the result of the node and the nodes have either:</span><br><br>
+						1. Conditions [Decision Nodes]<br>
+						2. Result [End Nodes]
+						<br><br>
+						<!-- <strong>The beta</strong> value is used in measuring how effectively the predictor variable influences the criterion variable, it is measured in terms of standard deviation. -->
+						<br>The branches/edges represent the truth/falsity of the statement and takes makes a decision based on that in the example below which shows a decision tree that evaluates the smallest of three numbers:
+						<br><br>Decision Tree Regression:<br><br>
+						Decision tree regression observes features of an object and trains a model in the structure of a tree to predict data in the future to produce meaningful continuous output. Continuous output means that the output/result is not discrete, i.e., it is not represented just by a discrete, known set of numbers or values.
+						<br><br><br>Discrete output example: A weather prediction model that predicts whether or not there’ll be rain in a particular day.
+						<br>Continuous output example: A profit prediction model that states the probable profit that can be generated from the sale of a product.
+					
+					
+					</p>	
+				</div>	
+			
+				<div class="column right">
+	
+					<img src="{% static 'assets/images/multireg2.png' %}" alt="" style= "width:82%;height:34%; margin-top: 33%;margin-left: 23%" />
+	
+				</div>	
+			</div>	
+
+			
+			<a name="random" style="text-decoration: none;"><div class=row5 style="width:100%;height: 1345px;margin-top:5%"></a>
+				<div class= "column left">
+					<h3 style="color:black;font-weight:bold;font-size:25px">Random Forest Regression</h3><br></a>
+					<p style="text-align: justify;font-weight:bold;color:#444444">
+						Every decision tree has high variance, but when we combine all of them together in parallel then the resultant variance is low as each decision tree gets perfectly trained on that particular sample data and hence the output doesn’t depend on one decision tree but multiple decision trees. In the case of a classification problem, the final output is taken by using the majority voting classifier. In the case of a regression problem, the final output is the mean of all the outputs. This part is Aggregation.						<br><br>For example, you could use multiple regression to understand whether exam performance can be predicted based on revision time, test anxiety, lecture attendance and gender. Alternately, you could use multiple regression to understand whether daily cigarette consumption can be predicted based on smoking duration, age when started smoking, smoker type, income and gender.
+	
+						<br><br>A Random Forest is an ensemble technique capable of performing both regression and classification tasks with the use of multiple decision trees and a technique called Bootstrap and Aggregation, commonly known as bagging. 
+						<br><br>The multiple regression equation explained above takes the following form:
+						The basic idea behind this is to combine multiple decision trees in determining the final output rather than relying on individual decision trees.						<br><br><span style="color:black;font-weight:bolder;font-size:20px;margin-left:6%">y = b1x1 + b2x2 + … + bnxn + c.</span>
+						<br><br>Random Forest has multiple decision trees as base learning models. We randomly perform row sampling and feature sampling from the dataset forming sample datasets for every model. This part is called Bootstrap.<br><br>
+						<br><br>
+						<span style="color:black;font-weight:bolder;font-size:18px;margin-left:1%">We need to approach the Random Forest regression technique like any other machine learning technique</span><br><br>
+						<ul style="text-align: justify;font-weight:bold">
+							<li>Design a specific question or data and get the source to determine the required data.</li>
+							<li>Make sure the data is in an accessible format else convert it to the required format.</li>
+							<li>Specify all noticeable anomalies and missing data points that may be required to achieve the required data.</li>
+							<li>Create a machine learning model.</li>
+							<li>Set the baseline model that you want to achieve.</li>
+							<li>Train the data machine learning model.</li>
+							<li>Provide an insight into the model with test data.</li>
+							<li>Now compare the performance metrics of both the test data and the predicted data from the model.</li>
+							<li>Provide an insight into the model with test data.</li>
+						    <li>If it doesn’t satisfy your expectations, you can try improving your model accordingly or dating your data or use another data modeling technique.</li>
+							<li>At this stage you interpret the data you have gained and report accordingly.</li>
+						
+						
+						
+						</ul>						<br><br>
+						<p  style="text-align: justify;font-weight:bold;color:#444444"><strong>The beta</strong> value is used in measuring how effectively the predictor variable influences the criterion variable, it is measured in terms of standard deviation.
+						<br><br>R, is the measure of association between the observed value and the predicted value of the criterion variable.  R Square, or R2, is the square of the measure of association which indicates the percent of overlap between the predictor variables and the criterion variable.  Adjusted R2 is an estimate of the R2 if you used this model with a new data set.
+					</p></p>	
+				</div>	
+			
+				<div class="column right">
+	
+					<img src="{% static 'assets/images/random.png' %}" alt="" style= "width:82%;height:34%; margin-top: 33%;margin-left: 23%" />
+					<br><br>
+					<img src="{% static 'assets/images/random2.png' %}" style= "width:80%;height:25%; margin-top: 21%;margin-left: 22%;">
+
+				</div>	
+			</div>	
+			<br><br>
+
+		</div>
+
+			 <footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section>
+							<h3>Accumsan montes viverra</h3>
+							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing. Lorem ipsum dolor vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing sed feugiat eu faucibus. Integer ac sed amet praesent. Nunc lacinia ante nunc ac gravida.</p>
+						</section>
+						<section>
+							<h4>Sem turpis amet semper</h4>
+							<ul class="alt">
+								<li><a href="#">Dolor pulvinar sed etiam.</a></li>
+								<li><a href="#">Etiam vel lorem sed amet.</a></li>
+								<li><a href="#">Felis enim feugiat viverra.</a></li>
+								<li><a href="#">Dolor pulvinar magna etiam.</a></li>
+							</ul>
+						</section>
+						<section>
+							<h4>Magna sed ipsum</h4>
+							<ul class="plain">
+								<li><a href="#"><i class="icon fa-twitter">&nbsp;</i>Twitter</a></li>
+								<li><a href="#"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
+								<li><a href="#"><i class="icon fa-instagram">&nbsp;</i>Instagram</a></li>
+								<li><a href="#"><i class="icon fa-github">&nbsp;</i>Github</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; Untitled. Photos <a href="https://unsplash.co">Unsplash</a>, Video <a href="https://coverr.co">Coverr</a>.
+					</div>
+				</div>
+			</footer>
+            <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-_RHlOhsIBOTU20mJc8OvTC3ZF_nsb_o&callback=initMap"></script>
+			<script>
+				$(document).ready(function(){
+					$(".regnavbar li").click(function(){
+						$("li").removeClass("active");
+						$(this).addClass("active");
+					});
+				});
+
+				function initMap()
+                {
+                    var location={lat:22.628760,lng:75.806880};
+                    var map=new google.maps.Map(document.getElementById("map"),{zoom:4,center:location});
+
+                }               
+
+				function toggle_visibility()
+				 {
+					var e = document.getElementById("myForm");
+					var e1 = document.getElementById("myForm2");
+					if(e.style.display == 'block' || e1.style.display=="block" )
+					{
+						e.style.display = 'none';
+						e1.style.display='none';
+					}		
+					else
+						e.style.display = 'block';
+				}
+				function toggle_visibility_login()
+				 {
+					var f = document.getElementById("hidlogout");
+					if(f.style.display == 'block')
+					{
+						f.style.display = 'none';
+					}		
+					else
+						f.style.display = 'block';
+				}
+
+				function validateLogin()
+				{
+
+					var input_email=document.getElementById("email_login").value;
+					if (input_email.substring(input_email.length-4,input_email.length)!=".com" && input_email.length!=0 || input_email.indexOf("@")<1 && input_email.length!=0  )
+					{
+					   document.getElementById("error_msg1").style.display="inline-block";
+					}
+					else
+					document.getElementById("error_msg1").style.display="none";
+
+					var input_pwd=document.getElementById("pwd_login").value;
+				    var reg=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+					if(	input_pwd.match(reg)==null && input_pwd.length!=0) 
+						{ 
+							document.getElementById("error_msg2").style.display="inline-block";
+							document.getElementById("myForm").style.height="407px";
+							
+						}
+					else{
+						
+					document.getElementById("error_msg2").style.display="none";
+					document.getElementById("myForm").style.height="362px";
+					}
+					
+				}
+
+				function openRegisterForm()
+				 {
+					document.getElementById("myForm").style.display = "none";
+					document.getElementById("myForm2").style.display = "block";
+                }
+            </script>
+        	<script type="text/javascript">
+				/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+				(function(d, m){
+				  var kommunicateSettings = {"appId":"19fa8e755b60b29c0a9c5e7775b105068","popupWidget":true,"automaticChatOpenOnNavigation":true};
+				  var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+				  s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+				  var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+				  window.kommunicate = m; m._globals = kommunicateSettings;
+				})(document, window.kommunicate || {});
+			</script>
+			<script src="{% static 'https://kit.fontawesome.com/b764a53ebc.js' %}" ></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+            <script src="{% static 'assets/js/main.js' %}"></script>
+    </body>
+</html>    

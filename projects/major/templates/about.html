@@ -1,0 +1,296 @@
+{% load static %}
+
+<html>
+	<head>
+		<title>CODERS HUB</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+		<link rel="stylesheet" href="{% static 'assets/css/new1.css/' %}">
+	</head>
+
+	<body class="is-preload" >
+
+		<!-- Header -->
+			<header id="header">
+				<a class="logo" href="index.html">CODERS HUB</a>
+				<nav>
+                    {% if user.is_authenticated %}
+					<i class="fa fa-user" style="font-size:24px;text-align:center;display:inline-block" aria-hidden="true" ></i>
+					<button style="background-color:transparent;color:#ff192a;padding-left:5px;padding:1px 0.55rem;display:inline-block" >{{user.first_name}}</button>
+					<!--<div id="hidlogout" style="background-color:transparent;color:#ff192a;padding-right:13px;display:inline-block"><a="logout" style="text-decoration:none;color:#ff1818cc">LogOut</a></div>-->
+					<button style="background-color:transparent;color:#ff192a;padding-right:11px;display:inline-block;padding: 0px 0.8rem;" onclick="location.href='logout'">LogOut</button>
+					{% else %}
+					<button style="background-color:transparent;color:#a51313;" onclick="toggle_visibility()">SignIn/Register</button>
+					
+					{% endif %}
+
+                    <a href="#menu" style="display:inline-block">Menu</a>
+                </nav>
+                
+			</header> 
+			<div >
+            <header style="text-align:center;padding-top:40px;font-size: 40px;font-weight:500;color:#262626">
+                DISCOVER US
+            </header>
+            <div class="form-popup" id="myForm">
+				<form action="login" class="form-container" method="POST">
+					{% csrf_token %}
+				  <h1 style="color:#ffffff">Login</h1>
+			  
+				  <label for="email"><b style="color:white">Username</b><div id="error_msg1" style="font-size: 10px;display:none;color:red">&nbsp;&nbsp;&nbsp;&nbsp; *Enter Valid Username</div></label>
+				  
+				  <input type="text" id="email_login" placeholder="Enter Username" name="uname" onchange="validateLogin()" required>
+				
+				  <label for="psw" ><b style="color:white">Password</b> <div id="error_msg2" style="font-size: 10px; display: none;color:red">*Password must be between 8 to 15 characters with at least one lowercase letter, one uppercase letter, one numeric digit, and one special character</div></label>
+				  <input type="password" id="pwd_login" placeholder="Enter Password" name="psw" onchange="validateLogin()" required>
+				 
+				  <button type="submit" class="btn">Login</button>
+				  <button type="button"  class="btn cancel" onclick="openRegisterForm()" >New user</button>
+				  <p style="text-align:center">Forgot Password?</p>
+				</form>
+			  </div>
+			  <div class="form-popup" id="myForm2" style="height: 707px;">
+                <form action="register" method="POST" class="form-container">
+					{% csrf_token %}
+				  <h1 style="color:#ffffff">Register</h1>
+			  
+				  <label for="fname" ><b style="color:white">First Name</b></label>
+				  <input type="text" placeholder="Enter Full Name" name="fname" required>
+				  <label for="fname" ><b style="color:white">Last Name</b></label>
+				  <input type="text" placeholder="Enter Full Name" name="lname" required>
+				  <label for="lname" ><b style="color:white">Username</b></label>
+				  <input type="text" placeholder="Enter Username" name="username" required>
+
+				  <label for="email" ><b style="color:white">Email-Id</b></label>
+				  <input type="text" placeholder="Enter Email" name="email" required>
+		
+				  <label for="psw" ><b style="color:white">New Password</b></label>
+				  <input type="password" placeholder="Enter Password" name="psw" required>
+				  <label for="psw" ><b style="color:white">Confirm Password</b></label>
+				  <input type="password" placeholder="Retype Password" name="rpsw" required>
+				 
+
+			  
+				  <button type="submit"  class="btn cancel"  style="width:100%" onsubmit="return validateRegister()">Register Now!</button>
+				</form>
+            </div>
+
+            <nav id="menu">
+				<ul class="links">
+					<li><a href="home">Home</a></li>
+					<li><a href="elements.html">Elements</a></li>
+					<li><a href="about">About Us</a></li>
+				</ul>
+            </nav>
+            <br>
+			<br>
+			<div class=firstpart style=width:40%;display:inline-block>
+				<div style="display:flex">
+					<div style="order:-1;width:330px;text-align:justify;height:200px;margin-left:3%;background-color:#7a7a7af2;color:white;padding:3px;border:1px solid black;border-radius:2px;z-index:4px;position:absolute;display:inline-block;overflow:hidden;margin-top:1.4%">
+						<h2 style="text-align:center;color:white">VISION</h2>
+						<p>To develop a technical and professional University for carrying out educational
+						and research work of excellent nature; to generate high class technocrats and
+						professionals for the benefit of the society at large.</p>
+				
+				</div>
+				<div class="img-box" style="z-index:-1;width:340px;height:240px;background-color:black;display:inline-block;margin-left: 38%">
+						<img src="{% static 'assets/images/vision.jpg' %}" alt="" style="padding:2px;width:100%;height:100%"/>
+				</div>
+				</div><br><br><br>
+				<div style="display:flex">
+				
+					<div class="img-box" style="z-index:-1;width:340px;height:240px;background-color:black;display:inline-block;margin-left: 3%">
+							<img src="{% static 'assets/images/mission.jpg' %}" alt="" style="padding:2px;width:100%;height:100%"/>
+					</div>
+
+					<div style="width:330px;text-align:justify;height:200px;margin-left:16%;background-color:#7a7a7af2;color:white;padding:3px;border:1px solid black;border-radius:2px;z-index:4px;position:absolute;display:inline-block;overflow:hidden;margin-top:1.4%">
+						<h2 style="text-align:center;color:white">MISSSION</h2>
+						<p>To produce conceptually sound, practically oriented, value driven and well groomed technocrats and professionals.</p>
+					</div>
+				</div><br><br><br>
+
+				<div style="display:flex">
+					<div style="order:-1;width:330px;text-align:justify;height:200px;margin-left:3%;background-color:#7a7a7af2;color:white;padding:3px;border:1px solid black;border-radius:2px;z-index:4px;position:absolute;display:inline-block;overflow:hidden;margin-top:1.4%">
+						<h2 style="text-align:center;color:white">QUALITY</h2>
+						<p>We are committed to transform raw hands into intellectuals by injecting fundamentals with concepts and skills to enable them to face the technology of tomorrow</p>
+				
+					</div>
+					<div class="img-box" style="z-index:-1;width:340px;height:240px;background-color:black;display:inline-block;margin-left: 38%">
+							<img src="{% static 'assets/images/quality.jpg' %}" alt="" style="padding:2px;width:100%;height:100%"/>
+					</div>
+				</div>
+			</div>
+			
+            <div class="secondpart" style="height:92%;width:55%;display:inline-block;padding-left:3px;border-radius:3px;position: absolute;margin-left: 5%;">
+				<p style="border:3px solid #211e1e;margin-left:4%;margin-bottom:10px"></p>
+			    <p style="border:3px solid #211e1e;margin-left:4%;"></p>
+				<div class='secondfirst' style="height:60%;width:85%;margin-left:4%">
+                	<iframe style="border:1px solid black; " src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.3763210954717!2d75.8869853146479!3d22.75141148509106!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302a814ca51dd%3A0xf684b03b6f0e52eb!2sSayaji%20Hotel%20Indore!5e0!3m2!1sen!2sin!4v1592386921893!5m2!1sen!2sin" width="707" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+				</div>	<br>
+				<p style="border:12px solid #211e1e;margin-left:4%;margin-bottom:10px"></p>
+				<div class="secondsec" style="width:100%;height:100px;position:relative;margin-top:7%;color:black;margin-left:4%">
+					<h2 style="color: black;font-weight: 400">Residing At:</h2>
+					<p style="color:black;font-size: initial;">172-Industrial Colony, Sector-56,<br>
+					A.B Road,<br>
+					Indore<br>
+					Ph.No-9165190035<br>
+					customerhelpdesk@coderhub.com</p>
+
+				</div>
+			</div>
+			</div>
+		   </div><br><br><br>
+
+		   <div class="container"style="background-image:url('/static/assets/images/pen.jpg');background-size: cover;background-repeat: no-repeat;color:black;padding: 20px;">
+			<form action="addreview" method="GET">
+			  <h1>Write Us!!</h1>	
+			  <label for="fname">First Name</label>
+			  <input type="text" id="fname" name="firstname" placeholder="Your name..">
+		  
+			  <label for="lname">Last Name</label>
+			  <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+		  
+			  <label for="country">Country</label>
+			  <select id="country" name="country">
+				<option value="australia">Australia</option>
+				<option value="canada">Canada</option>
+				<option value="usa">USA</option>
+			  </select>
+		  
+			  <label for="subject">Subject</label>
+			  <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+			  <br>
+			  <input type="submit" value="Submit" onclick=alertmsg() style="background-color:#575757;color:white ">
+			</form>
+		  </div>
+		 
+		 
+		   <br><br>
+			<footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section>
+							<h3>Accumsan montes viverra</h3>
+							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing. Lorem ipsum dolor vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing sed feugiat eu faucibus. Integer ac sed amet praesent. Nunc lacinia ante nunc ac gravida.</p>
+						</section>
+						<section>
+							<h4>Sem turpis amet semper</h4>
+							<ul class="alt">
+								<li><a href="#">Dolor pulvinar sed etiam.</a></li>
+								<li><a href="#">Etiam vel lorem sed amet.</a></li>
+								<li><a href="#">Felis enim feugiat viverra.</a></li>
+								<li><a href="#">Dolor pulvinar magna etiam.</a></li>
+							</ul>
+						</section>
+						<section>
+							<h4>Magna sed ipsum</h4>
+							<ul class="plain">
+								<li><a href="#"><i class="icon fa-twitter">&nbsp;</i>Twitter</a></li>
+								<li><a href="#"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
+								<li><a href="#"><i class="icon fa-instagram">&nbsp;</i>Instagram</a></li>
+								<li><a href="#"><i class="icon fa-github">&nbsp;</i>Github</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; Untitled. Photos <a href="https://unsplash.co">Unsplash</a>, Video <a href="https://coverr.co">Coverr</a>.
+					</div>
+				</div>
+			</footer>
+
+
+ 
+ 
+            <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-_RHlOhsIBOTU20mJc8OvTC3ZF_nsb_o&callback=initMap"></script>
+			<script>
+
+				function alertmsg(){
+
+					alert("Thank You for adding your precious reviews with us");
+				}
+				
+                function initMap()
+                {
+                    var location={lat:22.628760,lng:75.806880};
+                    var map=new google.maps.Map(document.getElementById("map"),{zoom:4,center:location});
+
+                }               
+
+				function toggle_visibility()
+				 {
+					var e = document.getElementById("myForm");
+					var e1 = document.getElementById("myForm2");
+					if(e.style.display == 'block' || e1.style.display=="block" )
+					{
+						e.style.display = 'none';
+						e1.style.display='none';
+					}		
+					else
+						e.style.display = 'block';
+				}
+				function toggle_visibility_login()
+				 {
+					var f = document.getElementById("hidlogout");
+					if(f.style.display == 'block')
+					{
+						f.style.display = 'none';
+					}		
+					else
+						f.style.display = 'block';
+				}
+
+				function validateLogin()
+				{
+
+					var input_email=document.getElementById("email_login").value;
+					if (input_email.substring(input_email.length-4,input_email.length)!=".com" && input_email.length!=0 || input_email.indexOf("@")<1 && input_email.length!=0  )
+					{
+					   document.getElementById("error_msg1").style.display="inline-block";
+					}
+					else
+					document.getElementById("error_msg1").style.display="none";
+
+					var input_pwd=document.getElementById("pwd_login").value;
+				    var reg=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+					if(	input_pwd.match(reg)==null && input_pwd.length!=0) 
+						{ 
+							document.getElementById("error_msg2").style.display="inline-block";
+							document.getElementById("myForm").style.height="407px";
+							
+						}
+					else{
+						
+					document.getElementById("error_msg2").style.display="none";
+					document.getElementById("myForm").style.height="362px";
+					}
+					
+				}
+
+				function openRegisterForm()
+				 {
+					document.getElementById("myForm").style.display = "none";
+					document.getElementById("myForm2").style.display = "block";
+                }
+            </script>
+			<script type="text/javascript">
+				/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+				(function(d, m){
+				  var kommunicateSettings = {"appId":"19fa8e755b60b29c0a9c5e7775b105068","popupWidget":true,"automaticChatOpenOnNavigation":true};
+				  var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+				  s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+				  var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+				  window.kommunicate = m; m._globals = kommunicateSettings;
+				})(document, window.kommunicate || {});
+			</script>
+
+			<script src="{% static 'https://kit.fontawesome.com/b764a53ebc.js' %}" ></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+    </body>
+</html>    

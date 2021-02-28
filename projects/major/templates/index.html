@@ -1,0 +1,565 @@
+{% load static %}
+
+<html>
+	<head>
+		<title>CODERS HUB</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+		<script src="https://kit.fontawesome.com/b764a53ebc.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="{% static 'assets/css/new1.css/' %}">
+		<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+		<style>
+			.form-container .btn:hover{
+				color:white;
+				background-color: black;
+				transition:transform 0.2s;
+			  }
+			  .button{
+				  height:2.25rem;
+			  }
+			  .navs:hover
+			  {
+				font-size:17px;
+				color:black;
+				font-weight:bold;
+				cursor: pointer;
+			  }
+			  .models{
+				transition: transform .2s;
+			  }
+			  .models:hover{
+				cursor:pointer;
+				transform: scale(1.05); 
+
+			  }
+			  input[type="text"]:focus {
+				background-color:rgba(52,52,52,0.74) !important;
+				border-color: white !important;
+			  }
+			  input[type="password"]:focus {
+				background-color:rgba(52,52,52,0.74) !important;
+				border-color: white !important;
+			  }
+			  
+		</style>
+	</head>
+
+	<body class="is-preload">
+		
+		<!-- Header -->
+			<header id="header">
+				<a class="logo" href="">CODERS HUB</a>
+				<nav>
+					{% if user.is_authenticated %}
+					<i class="fa fa-user" style="font-size:24px;text-align:center;display:inline-block" aria-hidden="true" ></i>
+					<button style="background-color:transparent;color:#ff192a;padding-left:5px;padding:1px 0.55rem;display:inline-block" >{{user.first_name}}</button>
+					<!--<div id="hidlogout" style="background-color:transparent;color:#ff192a;padding-right:13px;display:inline-block"><a="logout" style="text-decoration:none;color:#ff1818cc">LogOut</a></div>-->
+					<button style="background-color:transparent;color:#ff192a;padding-right:11px;display:inline-block;padding: 0px 0.8rem;height:2.25rem" onclick="location.href='logout'">LogOut</button>
+					{% else %}
+					<!-- <button style="background-color:transparent;color:#a51313;" onclick="toggle_visibility()">SignIn/Register</button> -->
+					<button id ="signinbt"style="background-color:transparent;color:#a51313;">SignIn/Register</button>
+					{% endif %}
+					<a href="#menu" style="display:inline-block">Menu</a>
+				</nav>
+			</header>
+			<!--Form-->
+			<div class="form-popup" id="myForm">
+				<form action="login" class="form-container" method="POST" autocomplete="off">
+					{% csrf_token %}
+				  <h1 style="color:#ffffff">Login</h1>
+			  
+				  <label for="uname"><b style="color:white">Username</b><span id="error_msg1" style="font-size: 10px;display:none;color:red">&nbsp;&nbsp;&nbsp;&nbsp; *Enter Valid Username</span></label>
+				  
+				  <input type="text" id="uname" placeholder="Enter Username" name="uname" required>
+				  
+				  <label for="psw" ><b style="color:white">Password</b> <span id="error_msg2" style="font-size: 10px;color:red"></span></label>
+				  <input type="password" id="pwd_login" placeholder="Enter Password" name="psw" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+				 
+				  <button type="submit" id="loginbutton" class="btn" >Login</button>
+				  <!-- <button id="regbt" type="button"  class="btn cancel" onclick="openRegisterForm()" >New user</button> -->
+				  <button id="regbt" type="button"  class="btn cancel">New user</button>
+				  <p style="text-align:center">Forgot Password?</p>
+				</form>
+			  </div>
+			  <div class="form-popup" id="myForm2" style="height: 755px;">
+                <form action="register" method="POST" onsubmit='return validate()' class="form-container" autocomplete="off">
+					{% csrf_token %}
+				  <h1 style="color:#ffffff">Register</h1>
+			  
+				  <label for="fname" ><b style="color:white">First Name</b></label>
+				  <input type="text" id="rfname" placeholder="Enter Full Name" name="fname" onkeyup="checkfirstname()" required>
+				  <hr id="fnamehr" style="margin-top: -7.98%; background-color:red ;width:100%; height:2px; border-radius: 93px; display:none">
+				  <label for="fname" ><b style="color:white">Last Name</b></label>
+				  <input type="text" id=rlname placeholder="Enter Full Name" name="lname" onkeyup="checkLastname()"required>
+				  <hr id="lnamehr" style="margin-top: -7.98%; background-color:red ;width:100%; height:2px; border-radius: 93px; display:none">
+				  <label for="lname" ><b style="color:white">Username</b></label>
+				  <input type="text"id=runame placeholder="Enter Username" name="username" onkeyup="checkusername()" required>
+				  <hr id="unamehr" style="margin-top: -7.98%; background-color:red ;width:100%;  height:2px; border-radius: 93px;display:none">
+				  <label for="email" ><b style="color:white">Email-Id</b></label>
+				  <input type="text" id=remail placeholder="Enter Email" name="email" onkeyup="checkemail()" required>
+				  <hr id="emailhr" style="margin-top: -7.98%; background-color:red ;width:100%;  height:2px; border-radius: 93px;display:none">
+				  <label for="psw" ><b style="color:white">New Password</b></label>
+				  <input class="field" type="password" id=rpwd placeholder="Enter Password" name="psw" onkeyup="checkpwd()" required>
+				  <hr id="pwdhr" style="margin-top: -7.98%; background-color:red ;width:100%;  height:2px; border-radius: 93px;display:none">
+				  <label for="psw" ><b style="color:white">Confirm Password</b></label>
+				  <input type="password" id=rcpwd placeholder="Retype Password" name="rpsw" onkeyup="repwdcheck()" required>
+				  <hr id="rpwdhr" style="margin-top:-7.98%; background-color:red ;width:100%;  height:2px; border-radius: 93px;display:none">
+
+				  <button type="submit"  class="btn cancel"  style="width:100%">Register Now!</button>
+				</form>
+			  </div>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="home">Home</a></li>
+					<li><a href="elements.html">Elements</a></li>
+					<li><a href="about">About Us</a></li>
+					<li><a href="shop">Shop</a></li>
+				</ul>
+			</nav>
+
+		<!-- Banner -->
+			<section id="banner">
+				<div class="inner">
+					<h1>CODERS HUB</h1>
+					<p>A complete developers guide to Artificial Intelligence & Machine Learning<br> released under the Creative Tech Ltd.</p>
+				</div>
+				<video autoplay loop muted playsinline src="{% static 'assets/images/banner_test.mp4' %}"></video>
+			</section>
+			
+		<!-- Highlights -->
+			<section class="wrapper" data-aos="fade-up" >
+				<div class="inner" >
+					<header class="special">
+						<h2>Sem turpis amet semper</h2>
+						<p>In arcu accumsan arcu adipiscing accumsan orci ac. Felis id enim aliquet. Accumsan ac integer lobortis commodo ornare aliquet accumsan erat tempus amet porttitor.</p>
+					</header>
+					<div class="highlights">
+						<section data-aos="fade-up" data-aos-duration="450">	
+							<div class="content">
+								<header>
+									<a href="#" class="icon fa fa-microphone" aria-hidden="true "><span class="label">Icon</span></a>
+									<h3 style="margin-top: 10px;">Natuaral Language Processing</h3>
+								</header>
+								
+								<p>Natural language processing (NLP) is a subfield of linguistics, computer science, information engineering, and artificial intelligence concerned with the interactions between computers and human (natural) languages.</p>
+							</div>
+					
+						</section>
+
+						<section data-aos="fade-up" data-aos-duration="450">
+							<div class="flip-card">
+								<div class="flip-card-inner">
+									<div class="flip-card-front">
+										<div class="content">
+											<header>
+												<a href="#"><i class="fas fa-brain lg" style="font-size:58px ;margin-top: 2px;font-size: 68px;" aria-hidden="true "></i><span class="label"></span></a>
+												<h3 style='margin-top:18px'>Machine Learning</h3>
+											</header>
+											<br>
+											<p>Machine learning is an application of artificial intelligence (AI) that provides systems the ability to automatically learn and improve from experience without being explicitly programmed. </p>
+										</div>
+									</div>
+								<div class="flip-card-back">
+									<h1>MACHINE LEARNING HACKS:</h1>
+									<ul style="line-height: 28px;">					
+										<a href="regression" style="text-decoration: none;color:black"><li class="navs">Regression</li></a>
+										<a href="classification" style="text-decoration: none;color:black"><li class="navs">Classification</li></a>
+										<li class="navs">Clustering</li>
+										<li class="navs">Time Series Prediction</li>
+										<li class="navs">Artificial neural network</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						</section >
+						<section data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="450">
+							<div class="flip-card">
+								<div class="flip-card-inner">
+									<div class="flip-card-front">
+										<div class="content">
+											<header>
+												<a href="#"><i class="fa fa-eye" style="font-size:58px ;margin-top: 9px;font-size: 68px;"  aria-hidden="true"></i><span class="label"></span></a>	
+												<h3 style="margin-top: 10px">Computer Vision</h3>
+											</header>
+											<br>
+											<p>Computer vision is the field of computer science that focuses on replicating parts of the complexity of the human vision system and enabling computers to identify and process objects in images and videos in the same way that humans do.</p>
+										</div>
+									</div>
+									<div class="flip-card-back">
+										<h1 style="font-size: 42px;">COMPUTER VISION WORKHORSE:</h1>
+										<ul style="line-height: 28px;">
+											
+											<li class="navs">Object Detection</li>
+											<li class="navs">Face Recognition</li>
+											<li class="navs">Image Classificatione</li>
+											<li class="navs">Image Generation</li>
+											<li class="navs">Handwriting Recognition</li>
+	
+									</div>
+								</div>
+							</div>
+							
+							
+							<!--<div class="content">
+								<header>
+
+									<a href="#"><i class=" fa fa-eye" style="font-size:58px ;margin-top: 9px;font-size: 68px;"  aria-hidden="true"></i><span class="label"></span></a>
+									
+									<h3 style="margin-top: 10px">Computer Vision</h3>
+								</header>
+								<br>
+								<p>Computer vision is the field of computer science that focuses on replicating parts of the complexity of the human vision system and enabling computers to identify and process objects in images and videos in the same way that humans do.</p>
+							</div>-->
+						</section>
+						<br><br>
+						<div class="row" style="margin-top:3%;display:inline-block;width:104%" data-aos="fade-up" data-aos-duration="450">
+						<a href="sentimentanalyser" style="text-decoration: none;"><div style="background-color: #11444f;color:white; width:30%;float:left;padding:19px 0px 19px 0px;text-align:center;vertical-align:center;margin-left:2%;border-radius:10px;" class="models">Sentiment Anlayser</div></a>
+						<a href="salaryprediction" style="text-decoration: none;"><div style="background-color: #4f1111;color:white; width:30%;margin-left:5%;float:left;padding:19px 0px 19px 0px;text-align:center;vertical-align:center;margin-left:4%;border-radius:10px" class="models">Salary Prediction</div></a>
+						<a href="digitrecog" style="text-decoration: none;"><div style="background-color: #11444f;color:white; width:30%;margin-left:5%;float:left;padding:19px 0px 19px 0px;text-align:center;vertical-align:center;margin-left:4%;border-radius:10px;margin-top: -2%;" class="models">Handwritten Digit Recognition</div></a>
+						<a href="canvas" style="text-decoration: none;"><div style="background-color: #4f1111;color:white;width: 30%;margin-left: 6%;float:left;padding: 18px 0px 19px 0px;text-align:center;vertical-align:center;margin-left: 2%;border-radius:10px;margin-top: 1%;" class="models">Hindi Character Recognition</div></a>
+						<a href="spam" style="text-decoration: none;"><div style="background-color: #11444f;color:white; width:30%;margin-left:4%;float:left;padding:19px 0px 19px 0px;text-align:center;vertical-align:center;border-radius:10px;margin-top: 1%;" class="models">Spam-Mail Identifier</div></a>
+						<a href="socialad" style="text-decoration: none;"><div style="background-color: #4f1111;color:white; width:30%;margin-left:4%;float:left;padding:19px 0px 19px 0px;text-align:center;vertical-align:center;border-radius:10px;margin-top: 1%;" class="models">Social-Ad Classifier</div></a>
+						</div>
+						<!--<section>
+							<div class="content">
+								<header>
+									<a href="#" class="ico5n fa-line-chart"><span class="label">Icon</span></a>
+									<h3>Interdum gravida</h3>
+								</header>
+								
+								<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<header>
+									<a href="#" class="icon fa-paper-plane-o"><span class="label">Icon</span></a>
+									<h3>Faucibus consequat</h3>
+								</header>
+								<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<header>
+									<a href="#" class="icon fa-qrcode"><span class="label">Icon</span></a>
+									<h3>Accumsan viverra</h3>
+								</header>
+								<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+							</div>
+						</section>-->
+					</div>
+				</div>
+			</section>
+
+		<!-- CTA -->
+			<section id="cta"  class="wrapper" data-aos="fade-up" data-aos-duration="450 >
+				<div class="inner">
+					<h2>Curabitur ullamcorper ultricies</h2>
+					<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing. Lorem ipsum dolor vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing sed feugiat eu faucibus. Integer ac sed amet praesent. Nunc lacinia ante nunc ac gravida.</p>
+				</div>
+			</section>
+
+		<!-- Testimonials -->
+			<section class="wrapper" data-aos="fade-up" data-aos-duration="450">
+				<div class="inner">
+					<header class="special">
+						<h2>Faucibus consequat lorem</h2>
+						<p>In arcu accumsan arcu adipiscing accumsan orci ac. Felis id enim aliquet. Accumsan ac integer lobortis commodo ornare aliquet accumsan erat tempus amet porttitor.</p>
+					</header>
+					<div class="testimonials" data-aos="fade-up" data-aos-duration="450">
+						<section>
+							<div class="content" data-aos="fade-up" data-aos-duration="450">
+								<blockquote>
+									<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+								</blockquote>
+								<div class="author">
+									<div class="image">
+										<img src="{% static 'assets/images/pic01.jpg' %}" alt="" />
+									</div>
+									<p class="credit">- <strong>Jane Doe</strong> <span>CEO - ABC Inc.</span></p>
+								</div>
+							</div>
+						</section>
+						<section>
+							<div class="content" data-aos="fade-up" data-aos-duration="450">
+								<blockquote>
+									<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+								</blockquote>
+								<div class="author">
+									<div class="image">
+										<img src="{% static 'assets/images/pic03.jpg' %}" alt="" />
+									</div>
+									<p class="credit">- <strong>John Doe</strong> <span>CEO - ABC Inc.</span></p>
+								</div>
+							</div>
+						</section>
+						<section data-aos="fade-up" data-aos-duration="450">
+							<div class="content">
+								<blockquote>
+									<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+								</blockquote>
+								<div class="author">
+									<div class="image">
+										<img src="{% static 'assets/images/pic02.jpg' %}" alt="" />
+									</div>
+									<p class="credit">- <strong>Janet Smith</strong> <span>CEO - ABC Inc.</span></p>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</section>
+			
+
+		<!-- Footer -->
+			<footer id="footer" data-aos="fade-up" data-aos-duration="450">
+				<div class="inner">
+					<div class="content">
+						<section>
+							<h3>Accumsan montes viverra</h3>
+							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing. Lorem ipsum dolor vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing sed feugiat eu faucibus. Integer ac sed amet praesent. Nunc lacinia ante nunc ac gravida.</p>
+						</section>
+						<section>
+							<h4>Sem turpis amet semper</h4>
+							<ul class="alt">
+								<li><a href="#">Dolor pulvinar sed etiam.</a></li>
+								<li><a href="#">Etiam vel lorem sed amet.</a></li>
+								<li><a href="#">Felis enim feugiat viverra.</a></li>
+								<li><a href="#">Dolor pulvinar magna etiam.</a></li>
+							</ul>
+						</section>
+						<section>
+							<h4>Magna sed ipsum</h4>
+							<ul class="plain">
+								<li><a href="#"><i class="icon fa-twitter">&nbsp;</i>Twitter</a></li>
+								<li><a href="#"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
+								<li><a href="#"><i class="icon fa-instagram">&nbsp;</i>Instagram</a></li>
+								<li><a href="#"><i class="icon fa-github">&nbsp;</i>Github</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; Untitled. Photos <a href="https://unsplash.co">Unsplash</a>, Video <a href="https://coverr.co">Coverr</a>.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			
+			<script>
+				$(document).ready(function(){
+					$('#signinbt').click(function(){
+						$("#myForm").fadeToggle();
+						$("#myForm2").fadeOut();
+					})
+					$('#regbt').click(function(){
+						$("#myForm").fadeOut();
+						$("#myForm2").fadeIn();
+					})
+	
+				});
+
+				function checkfirstname()
+				{
+					console.log("hi9")
+					firstname=document.getElementById("rfname").value;
+					console.log(firstname);
+					if (firstname.length>2)	
+					{
+						$("#fnamehr").css("display","block");
+						$("#fnamehr").css("background-color","green");
+					}
+					else{
+						$("#fnamehr").css("display","block");
+						$("#fnamehr").css("background-color","red");
+					}
+				}
+				function checkLastname()
+				{
+					lastname=document.getElementById("rlname").value;
+					console.log(lastname)
+					if (lastname.length>2)	
+					{
+						$("#lnamehr").css("display","block");
+						$("#lnamehr").css("background-color","green");
+					}
+					else
+					{
+						$("#lnamehr").css("display","block");
+						$("#lnamehr").css("background-color","red");
+					}
+				}
+				
+				function checkusername()
+				{
+					var username=document.getElementById("runame").value;
+					console.log(username)
+					if (username.length<3)
+					{
+						$("#unamehr").css("display","block");
+						$("#unamehr").css("background-color","red");
+					}
+					else{
+						$("#unamehr").css("display","block");
+						$("#unamehr").css("background-color","green");
+					}
+				}
+				
+				function checkemail()
+				{
+					var email=document.getElementById("remail").value;
+					if 	(email.indexOf('@')==-1 || email.length-email.indexOf('@')<4 || email.indexOf('@')<1)
+					{
+						$("#emailhr").css("display","block");
+						$("#emailhr").css("background-color","red");
+						
+					}
+					else
+					{
+						$("#emailhr").css("display","block");
+						$("#emailhr").css("background-color","green");
+					}
+
+				}
+				function checkpwd()
+				{
+					pwd=document.getElementById("rpwd").value;
+					
+					var reg=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+					if (pwd.match(reg))
+					{
+						$("#pwdhr").css("display","block");
+						$("#pwdhr").css("background-color","green");
+					}
+					else{
+						$("#pwdhr").css("display","block");
+						$("#pwdhr").css("background-color","red");}
+				}
+				function repwdcheck()
+				{
+					pwd=document.getElementById("rpwd").value;
+					rcpwd=document.getElementById("rcpwd").value;
+					
+					if (pwd==rcpwd){
+						$("#rpwdhr").css("display","block");
+						$("#rpwdhr").css("background-color","green");
+					}
+					else
+					{
+						$("#rpwdhr").css("display","block");
+						$("#rpwdhr").css("background-color","red");
+					}
+
+				}
+
+				
+				function validate()
+				{
+					firstname=document.getElementById("rfname").value;
+			
+					if (firstname.length>2)	
+					{
+						$("#fnamehr").css("background-color","green");
+						
+					}
+					else
+					{
+						alert("First name must be of more than two characters.")
+						return false;
+						$("#fnamehr").css("background-color","red");
+					}	
+					
+					lastname=document.getElementById("rlname").value;
+	
+					if (lastname.length>2)	
+					{
+						$("#lnamehr").css("background-color","green");
+					}
+					else
+					{
+						alert("Last name must be of more than two characters!")
+						return false;
+						$("#lnamehr").css("background-color","red");
+					}	
+					
+					var username=document.getElementById("runame").value;
+					
+					if (username.length<3)
+					{
+						alert("Username length must be more than 2 characters.")
+						return false;
+						$("#unamehr").css("background-color","red");
+					}
+					else{
+						
+						$("#unamehr").css("background-color","green");
+					}
+					
+					var email=document.getElementById("remail").value;
+					if 	(email.indexOf('@')==-1 || email.length-email.indexOf('@')<4 || email.indexOf('@')<1)
+					{
+						alert("Provide correct email-id.")
+						return false;
+						$("#emailhr").css("background-color","red");	
+					}
+					else
+						$("#emailhr").css("background-color","green");
+
+					
+					pwd=document.getElementById("rpwd").value;
+					var reg=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+					if (pwd.match(reg))
+					$("#pwdhr").css("background-color","green");
+					else
+					{
+						alert("Password must have ayleast one capital letter,one alphabet,one number.")
+						return false;
+						$("#pwdhr").css("background-color","red");
+					}	
+
+					
+					pwd=document.getElementById("rpwd").value;
+					rcpwd=document.getElementById("rcpwd").value;
+					console.log(pwd,rcpwd)
+					if (pwd==rcpwd)
+						$("#rpwdhr").css("background-color","green");
+					else
+					{
+						alert("Type Confirm password same as New Password.")
+						return false;
+						$("#rpwdhr").css("background-color","red");
+					}
+					
+					return true;
+				}		
+			</script>
+			<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+			<script>
+			AOS.init();
+			</script>
+			<script type="text/javascript">
+				/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+				(function(d, m){
+				  var kommunicateSettings = {"appId":"19fa8e755b60b29c0a9c5e7775b105068","popupWidget":true,"automaticChatOpenOnNavigation":true};
+				  var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+				  s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+				  var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+				  window.kommunicate = m; m._globals = kommunicateSettings;
+				})(document, window.kommunicate || {});
+			</script>
+			<script src="{% static 'https://kit.fontawesome.com/b764a53ebc.js' %}" ></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>

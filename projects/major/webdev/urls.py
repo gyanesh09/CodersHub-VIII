@@ -1,0 +1,33 @@
+from django.urls import path
+from . import views
+
+urlpatterns=[
+    path('',views.home,name='home'),
+    path('index',views.home,name='home'),
+    path("register",views.register,name="register"),
+    path("login",views.login,name="login"),
+    path("logout",views.logout,name="logout"),
+    path("about",views.aboutus,name="aboutus"),
+    path("home",views.home,name="home"),
+    path("regression",views.regression,name="regression"),
+    path("shop",views.shop,name="shop"),
+    path('cart',views.add_to_cart,name="cart"),
+    path('removecartitem',views.removecartitem,name="removecartitem"),
+    path('changequan',views.changequan,name="changequan"),
+    path("HousePricePrediction",views.HousePricePrediction,name="HousePricePrediction"),
+    path("HousePricePredictionResult",views.HousePricePredictionResult,name="HousePricePredictionResult"),
+    path("salaryprediction",views.SalaryPrediction,name="salaryprediction"),
+    path("salarypredictionresult",views.SalaryPredictionResult,name="salarypredictionresult"),
+    path('sentimentanalyser',views.sentimentanalyser,name="sentimentanlayser"),
+    path('sentimentanalyserresult',views.sentimentanalyserresult,name="sentimentanlayseresult"),
+    path("digitrecog",views.digitrecog,name="digitrecog"),
+    path("digitrecogresult",views.digitrecogresult,name="digitrecogresult"),
+    path("addreview",views.addreview,name="addreview"),
+    path("classification",views.classification,name="classification"),
+    path("socialad",views.socialad,name="socialad"),
+    path("socialadresult",views.socialadresult,name="socialadresult"),
+    path("spam",views.spam,name="spam"),
+    path("canvas",views.canvas,name="canvas"),
+    path('savecanvas',views.savecanvas,name='savecanvas'),
+    path("spamresult",views.spamresult,name="spamresult"),
+]
